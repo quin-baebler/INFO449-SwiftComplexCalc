@@ -28,6 +28,80 @@ print("Welcome back to the UW Calculator")
 //: IMPORTANT: If any tests are commented out, you will be graded a zero (0)! You should never be in the habit of eliminating tests to make the code pass.
 //:
 class Calculator {
+    func add(lhs: Int, rhs: Int) -> Int {
+        return lhs + rhs
+    }
+
+    func subtract(lhs: Int, rhs: Int) -> Int {
+        return lhs - rhs
+    }
+
+    func multiply(lhs: Int, rhs: Int) -> Int {
+        return lhs * rhs
+    }
+
+    func divide(lhs: Int, rhs: Int) -> Double {
+        guard rhs != 0 else { return Double.nan } // Handle division by zero
+        return Double(lhs) / Double(rhs)
+    }
+
+    func add(_ numbers: [Int] = []) -> Int {
+        return numbers.reduce(0, +)
+    }
+    
+    func multiply(_ args: [Int]) -> Int{
+        var x: Int = 1
+        for i in args{
+            x *= i
+        }
+        return x
+    }
+
+    func mathOp(lhs: Int, rhs: Int, op: (Int, Int) -> Int) -> Int {
+        return op(lhs, rhs)
+    }
+    
+    func mathOp(args: [Int], beg: Int, op: (Int, Int) -> Int) -> Int {
+        var result = beg
+        for number in args {
+            result = op(result, number)
+        }
+        return result
+    }
+    
+    func count(_ args: [Int]) -> Int {
+        return args.count
+    }
+    
+    func avg(_ args: [Int]) -> Int {
+        return args.reduce(0, +) / args.count
+    }
+    
+    // Cartesian Points
+    func add(lhs: (Int, Int), rhs: (Int, Int)) -> (Int, Int) {
+        return (lhs.0 + rhs.0, lhs.1 + rhs.1)
+    }
+
+    func subtract(lhs: (Int, Int), rhs: (Int, Int)) -> (Int, Int) {
+        return (lhs.0 - rhs.0, lhs.1 - rhs.1)
+    }
+
+      
+    func add(lhs: [String: Int], rhs: [String: Int]) -> [String: Int]? {
+        guard let lhsX = lhs["x"], let lhsY = lhs["y"],
+        let rhsX = rhs["x"], let rhsY = rhs["y"] else {
+            return nil
+        }
+        return ["x": lhsX + rhsX, "y": lhsY + rhsY]
+    }
+
+    func subtract(lhs: [String: Int], rhs: [String: Int]) -> [String: Int]? {
+        guard let lhsX = lhs["x"], let lhsY = lhs["y"],
+        let rhsX = rhs["x"], let rhsY = rhs["y"] else {
+            return nil // Handle missing keys
+        }
+        return ["x": lhsX - rhsX, "y": lhsY - rhsY]
+    }
 }
 
 //: Don't change the name of this object (`calc`); it's used in all the tests.
@@ -52,7 +126,7 @@ calc.subtract(lhs: 2, rhs: 2) == 0
 calc.multiply(lhs: 2, rhs: 2) == 4
 calc.divide(lhs: 2, rhs: 2) == 1
 
-calc.mathOp(lhs: 5, rhs: 5, op: { (lhs: Int, rhs: Int) -> Int in (lhs + rjs) + (lhs * rhs) }) == 35
+calc.mathOp(lhs: 5, rhs: 5, op: { (lhs: Int, rhs: Int) -> Int in (lhs + rhs) + (lhs * rhs) }) == 35
     // This style is one way of writing an anonymous function
 calc.mathOp(lhs: 10, rhs: -5, op: { ($0 + $1) + ($0 - $1) }) == 20
     // This is the second, more terse, style; either works
@@ -85,3 +159,4 @@ let pd1 = ["x": 5, "y": 5]
 let pd2 = ["x": -4, "y": 4]
 calc.add(lhs: pd1, rhs: pd2) == ["x": 1, "y": 9]
 calc.subtract(lhs: pd1, rhs: pd2) == ["x": 9, "y": 1]
+
